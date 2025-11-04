@@ -39,36 +39,69 @@ const AccountList = () => {
     return (
         <div className="account-list-container">
             <h2>All Accounts</h2>
+            
             {accounts.length === 0 ? (
-                <p>No accounts found. Create one to get started!</p>
+                <p className="no-accounts-message">No accounts found. Create one to get started!</p>
             ) : (
-                <table className="account-table">
-                    <thead>
-                        <tr>
-                            <th>Account Number</th>
-                            <th>Account Holder</th>
-                            <th>Balance</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <>
+                    {/* Desktop Table View */}
+                    <table className="account-table">
+                        <thead>
+                            <tr>
+                                <th>Account Number</th>
+                                <th>Account Holder</th>
+                                <th>Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {accounts.map((account) => (
+                                <tr key={account.id}>
+                                    <td>{account.accountNumber}</td>
+                                    <td>{account.accountHolderName}</td>
+                                    <td>${account.balance.toFixed(2)}</td>
+                                    <td>
+                                        <button 
+                                            onClick={() => handleDelete(account.id)}
+                                            className="btn-delete"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {/* Mobile Card View */}
+                    <div className="account-cards">
                         {accounts.map((account) => (
-                            <tr key={account.id}>
-                                <td>{account.accountNumber}</td>
-                                <td>{account.accountHolderName}</td>
-                                <td>${account.balance.toFixed(2)}</td>
-                                <td>
+                            <div key={account.id} className="account-card">
+                                <div className="account-card-header">
+                                    <span className="account-number">{account.accountNumber}</span>
+                                </div>
+                                <div className="account-card-body">
+                                    <div className="account-info-row">
+                                        <span className="info-label">Account Holder:</span>
+                                        <span className="info-value">{account.accountHolderName}</span>
+                                    </div>
+                                    <div className="account-info-row">
+                                        <span className="info-label">Balance:</span>
+                                        <span className="balance-value">${account.balance.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                                <div className="account-card-footer">
                                     <button 
                                         onClick={() => handleDelete(account.id)}
                                         className="btn-delete"
                                     >
-                                        Delete
+                                        Delete Account
                                     </button>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         ))}
-                    </tbody>
-                </table>
+                    </div>
+                </>
             )}
         </div>
     );
